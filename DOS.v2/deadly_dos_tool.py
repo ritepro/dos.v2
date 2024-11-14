@@ -3,6 +3,11 @@ import random
 import threading
 import time
 import sys
+import os
+
+# Change terminal title to 'ricebitev.2'
+def change_terminal_title():
+    os.system("title ricebitev.2")  # Works on Windows, for Linux/Mac, use `os.system('echo -n -e "\033]0;ricebitev.2\007"')`
 
 # ASCII Art Header
 def print_header():
@@ -36,6 +41,9 @@ def send_packet(ip, port):
 
 # Main function to handle user input and attack
 def main():
+    # Change terminal title to "ricebitev.2"
+    change_terminal_title()
+
     print_header()
 
     # Ask for the target IP and port
